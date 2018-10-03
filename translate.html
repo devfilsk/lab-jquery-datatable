@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+    <!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
+</head>
+<body>
+<button class="btn btn-dark" onclick="" id="clear_filter">Limpar filtro</button>
+
+<table id="my-table" class="table table-striped">
+</table>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var datatable = $('#my-table').DataTable({
+            //paging: false,
+            //lengthChange: false,
+            //ordering: false,
+            //info: false,
+            //data: dados,
+            ajax: 'http://localhost:3000/data.json',
+            stateSave: true,
+            columns: [
+                {title: 'Nome', data: "Nome"},
+                {title: 'CEP', data: "CEP"},
+                {title: 'Logradouro', data: "Logradouro"},
+                {title: 'Cidade', data: "Cidade"},
+                //{title: 'Estado', data: "Estado", defaultContent: 'sem estado'}
+                {title: 'Estado', data: "Estado", defaultContent: '<strong>sem estado</strong>'},
+            ],
+            language: {
+                info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+                infoEmpty: 'Sem registros',
+                infoFiltered: 'filtrados de _MAX_ registros',
+                emptyTable: "Nenhum registro encontrado",
+                zeroRecords: "Nenhum registro encontrado para a busca",
+                lengthMenu: "Mostrando _MENU_ registro",
+                searchPlaceHolder: "Filtro",
+                //search: "Digite sua busca: _INPUT_  alskjdhfaksjdhf",
+                search: "Digite sua busca:",
+                paginate: {
+                    first: '<<',
+                    last: '>>',
+                    previous: '<',
+                    next: '>'
+                }
+
+            }
+        });
+        //função para resetar o status da tabela salvo
+        $("#clear_filter").click(function () {
+            datatable.state.clear();
+            window.location.reload();
+        });
+
+    });
+</script>
+</body>
+</html>
