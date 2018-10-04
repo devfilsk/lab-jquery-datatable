@@ -26,11 +26,6 @@
 <script>
     $(document).ready(function () {
         var datatable = $('#my-table').DataTable({
-            //paging: false,
-            //lengthChange: false,
-            //ordering: false,
-            //info: false,
-            //data: dados,
             ajax: 'http://localhost:3000/data.json',
             stateSave: true,
             columns: [
@@ -43,18 +38,13 @@
                 {
                     title: 'Ações',
                     data: null,
-                    createdCell: function (td, cellData, rowData, row, col) {
-                        /*
-                        console.log(td);//o próprio TD da coluna, caso queira mudar cor da coluna entre outras coisas
-                        console.log(cellData); //cellData são os dados da linha inteira, caso o data não seja null o valor é o valor preenchido pelo data
-                        console.log(rowData); // row data neste caso está igual ao cellData pois o "data" está null, caso contrario são diferentes
-                        console.log(row);//numero da linha
-                        console.log(col);//numero da coluna
-                        */
-
+                    /*createdCell: function (td, cellData, rowData, row, col) {
                         //CUSTOMIZAR O CONTEUDO DA COLUNA
                         //$(td).html('texto qualquer');
                         $(td).html('<a href="javascript:void(0)">Editar</a> | <a href="javascript:void(0)">Excluir</a>');
+                    },*/
+                    render: function (data, type, row, meta) {
+                        return '<a href="javascript:void(0)">Editar</a> | <a href="javascript:void(0)">Excluir</a>';
                     }
                 },
             ],
@@ -109,6 +99,7 @@
             }
             //desenha uma nova linha
             var dtrow = datatable.row;
+
             //preenche a nova linha com os dados vindos do formulário
             var rowAdd = dtrow.add({
                 Nome: $('[name=nome]').val(),
@@ -117,6 +108,7 @@
                 Cidade: $('[name=cidade]').val(),
                 Estado: $('[name=estado]').val()
             }).draw().node();
+
             // .drow() desenha a nova linha na tabela
             //.node() captura o elemento criado, permitindo uma referencia ao novo elemento
 

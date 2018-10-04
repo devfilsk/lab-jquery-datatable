@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+    <!-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
+</head>
+<body>
+
+
+<table id="my-table" class="table table-striped">
+</table>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var datatable = $('#my-table').DataTable({
+
+            ajax: {
+                url: 'https://reqres.in/api/users',
+                /*data: {
+                    dado: 1
+                }*/
+                data: function (data) {
+                    //retorna a instancia do datatable já existente
+                    var pageInfo = $('#my-table').DataTable().page.info();
+                    console.log(pageInfo);
+                    return $.extend({}, data, {page: pageInfo.page+1});
+                },
+                dataSrc: function (json) {
+                    json.recordsTotal = json.total;//total de registros que possui
+                    json.recordsFiltered = json.total;//total de registros filtrados
+                    return json.data;
+                }
+            },
+            serverSide: true,
+            //stateSave: true,//comentar essa linha caso for testar as coisas,pois ela salva o estado da tabela e pode gerar confusão na hora dos testes
+            pageLength: 3,
+            lengthChange: false,
+            //lengthMenu: [5,50,100],
+            //lengthMenu: [[5,50,100, -1], ["Pouco", "Mais ou Menos", "Muito", "Todos"]],
+            columns: [
+                {title: 'Id', data: "id"},
+                {title: 'Nome', data: "first_name"},
+                {title: 'Sobrenome', data: "last_name"},
+                {title: 'Avatar', data: "avatar"}
+            ],
+        });
+    });
+</script>
+</body>
+</html>
